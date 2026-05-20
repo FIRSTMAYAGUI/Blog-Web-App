@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import React from 'react'
 import { buttonVariants } from '../ui/button'
+import { ThemeToggle } from './theme-toggle'
 
 export function Navbar() {
   return (
@@ -20,6 +21,7 @@ export function Navbar() {
       </div>
 
       <div className='flex items-center gap-2'>
+        <ThemeToggle/>
         <Link className={buttonVariants()} href="/auth/sign-up">Sign up</Link>
         <Link className={buttonVariants({variant: 'secondary'})} href="/auth/login">Login</Link>
       </div>

@@ -32,16 +32,16 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <main className="max-w-7xl mx-auto w-full px-3 md:px-6 lg:px-8">
-              <Navbar/>
-              {children}
-            </main>
-          </ThemeProvider>
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <main className="max-w-7xl mx-auto w-full px-3 md:px-6 lg:px-8">
+            <Navbar/>
+            {children}
+          </main>
+        </ThemeProvider>
       </body>
     </html>
   );

@@ -13,7 +13,7 @@ export function Navbar() {
           </h1>
         </Link>
 
-        <div className='flex items-center gap-2'>
+        <div className='flex items-center gap-6'>
           <Link href="/">Home</Link>
           <Link href="/blog">Blog</Link>
           <Link href="/create">Create</Link>

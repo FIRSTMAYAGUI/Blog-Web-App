@@ -1,3 +1,6 @@
+"use client"
+
+import { signUpSchema } from "@/app/schemas/auth"
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -9,8 +12,20 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
 
 export default function SignUpPage (){
+
+    const form = useForm({
+        resolver: zodResolver(signUpSchema),
+        defaultValues:{
+            name: "",
+            email: "",
+            password: ""
+        }
+    });
+
     return (
         <Card className="w-full max-w-sm">
             <CardHeader>

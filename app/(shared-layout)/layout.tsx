@@ -4,8 +4,8 @@ import React from 'react'
 function SharedLayout({children} : {children: React.ReactNode;}) {
   return (
     <>
-        <Navbar/>
-        {children}
+      <Navbar/>
+      {children}
     </>
   )
 }

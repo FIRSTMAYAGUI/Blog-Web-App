@@ -49,7 +49,7 @@ export default function SignUpPage() {
       </CardHeader>
 
       <CardContent>
-        <form id="sign-up-form" onSubmit={form.handleSubmit(onSubmit)}>
+        <form id="sign-up-form">
           <FieldGroup>
 
             <Controller

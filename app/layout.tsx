@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { Navbar } from "@/components/custom/navbar";
 import { ThemeProvider } from "@/components/ui/theme-provider";
+import { ConvexClientProvider } from "../components/custom/ConvexClientProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -37,9 +37,11 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <main className="max-w-7xl mx-auto w-full px-3 md:px-4 lg:px-6">
-            {children}
-          </main>
+          <ConvexClientProvider>
+            <main className="max-w-7xl mx-auto w-full px-3 md:px-4 lg:px-6">
+              {children}
+            </main>
+          </ConvexClientProvider>
         </ThemeProvider>
       </body>
     </html>

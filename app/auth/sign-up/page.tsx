@@ -2,8 +2,10 @@
 
 import * as React from "react"
 import { signUpSchema } from "@/app/schemas/auth"
+import { authClient } from "@/lib/auth-client"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Controller, useForm } from "react-hook-form"
+import { useRouter } from "next/navigation"
 import * as z from "zod"
 
 import { Button } from "@/components/ui/button"
@@ -26,6 +28,10 @@ import { Input } from "@/components/ui/input"
 type SignUpFormValues = z.infer<typeof signUpSchema>
 
 export default function SignUpPage() {
+  const router = useRouter()
+  const [serverError, setServerError] = React.useState<string | null>(null)
+  const [isLoading, setIsLoading] = React.useState(false)
+
   const form = useForm<SignUpFormValues>({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
@@ -35,21 +41,35 @@ export default function SignUpPage() {
     },
   })
 
-  function onSubmit(values: SignUpFormValues) {
-    console.log(values)
+  async function onSubmit(values: SignUpFormValues) {
+    setServerError(null)
+    setIsLoading(true)
+
+    const { error } = await authClient.signUp.email({
+      name: values.name,
+      email: values.email,
+      password: values.password,
+    })
+
+    setIsLoading(false)
+
+    if (error) {
+      setServerError(error.message ?? "Something went wrong. Please try again.")
+      return
+    }
+
+    router.push("/")
   }
 
   return (
     <Card className="w-full max-w-sm">
       <CardHeader>
         <CardTitle>Create an account</CardTitle>
-        <CardDescription>
-          Sign up and start posting today
-        </CardDescription>
+        <CardDescription>Sign up and start posting today</CardDescription>
       </CardHeader>
 
       <CardContent>
-        <form id="sign-up-form">
+        <form id="sign-up-form" onSubmit={form.handleSubmit(onSubmit)}>
           <FieldGroup>
 
             <Controller
@@ -114,6 +134,11 @@ export default function SignUpPage() {
               )}
             />
 
+            {/* Server-side error (e.g. email already exists) */}
+            {serverError && (
+              <p className="text-sm text-destructive">{serverError}</p>
+            )}
+
           </FieldGroup>
         </form>
       </CardContent>
@@ -124,11 +149,17 @@ export default function SignUpPage() {
             type="button"
             variant="outline"
             onClick={() => form.reset()}
+            disabled={isLoading}
           >
             Reset
           </Button>
-          <Button type="submit" form="sign-up-form" className="flex-1">
-            Sign Up
+          <Button
+            type="submit"
+            form="sign-up-form"
+            className="flex-1"
+            disabled={isLoading}
+          >
+            {isLoading ? "Creating account..." : "Sign Up"}
           </Button>
         </Field>
       </CardFooter>

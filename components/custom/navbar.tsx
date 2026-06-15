@@ -1,9 +1,21 @@
+"use client"
+
 import Link from 'next/link'
 import React from 'react'
-import { buttonVariants } from '../ui/button'
+import { buttonVariants, Button } from '../ui/button'
 import { ThemeToggle } from './theme-toggle'
+import { Authenticated, Unauthenticated, AuthLoading } from 'convex/react'
+import { authClient } from '@/lib/auth-client'
+import { useRouter } from 'next/navigation'
 
 export function Navbar() {
+  const router = useRouter()
+
+  async function handleSignOut() {
+    await authClient.signOut()
+    router.push("/")
+  }
+
   return (
     <nav className='w-full flex py-5 items-center justify-between'>
       <div className='flex items-center gap-8'>
@@ -21,9 +33,26 @@ export function Navbar() {
       </div>
 
       <div className='flex items-center gap-2'>
-        <ThemeToggle/>
-        <Link className={buttonVariants()} href="/auth/sign-up">Sign up</Link>
-        <Link className={buttonVariants({variant: 'secondary'})} href="/auth/login">Login</Link>
+        <ThemeToggle />
+
+        <AuthLoading>
+          <div className='w-32 h-9 bg-muted animate-pulse rounded-md' />
+        </AuthLoading>
+
+        <Authenticated>
+          <Button variant='secondary' onClick={handleSignOut}>
+            Logout
+          </Button>
+        </Authenticated>
+
+        <Unauthenticated>
+          <Link className={buttonVariants({ variant: 'secondary' })} href="/auth/login">
+            Login
+          </Link>
+          <Link className={buttonVariants()} href="/auth/sign-up">
+            Sign up
+          </Link>
+        </Unauthenticated>
       </div>
     </nav>
   )

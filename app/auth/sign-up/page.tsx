@@ -54,6 +54,7 @@ export default function SignUpPage() {
     setIsLoading(false)
 
     if (error) {
+      console.log(error)
       setServerError(error.message ?? "Something went wrong. Please try again.")
       return
     }

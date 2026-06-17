@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import Link from "next/link"
-import { signUpSchema } from "@/app/schemas/auth"
+import { loginSchema } from "@/app/schemas/auth"
 import { authClient } from "@/lib/auth-client"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Controller, useForm } from "react-hook-form"
@@ -27,28 +27,26 @@ import {
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 
-type SignUpFormValues = z.infer<typeof signUpSchema>
+type LoginFormValues = z.infer<typeof loginSchema>
 
-export default function SignUpPage() {
+export default function LoginPage() {
   const router = useRouter()
   const [serverError, setServerError] = React.useState<string | null>(null)
   const [isLoading, setIsLoading] = React.useState(false)
 
-  const form = useForm<SignUpFormValues>({
-    resolver: zodResolver(signUpSchema),
+  const form = useForm<LoginFormValues>({
+    resolver: zodResolver(loginSchema),
     defaultValues: {
-      name: "",
       email: "",
       password: "",
     },
   })
 
-  async function onSubmit(values: SignUpFormValues) {
+  async function onSubmit(values: LoginFormValues) {
     setServerError(null)
     setIsLoading(true)
 
-    const { error } = await authClient.signUp.email({
-      name: values.name,
+    const { error } = await authClient.signIn.email({
       email: values.email,
       password: values.password,
     })
@@ -57,57 +55,35 @@ export default function SignUpPage() {
 
     if (error) {
       console.log(error)
-      setServerError(error.message ?? "Something went wrong. Please try again.")
-      toast.error(error.message ?? "Something went wrong. Please try again.")
+      setServerError(error.message ?? "Invalid email or password.")
+      toast.error(error.message ?? "Invalid email or password.")
       return
     }
 
-    toast.success("Account created successfully")
+    toast.success("Logged in successfully")
     router.push("/")
   }
 
   return (
     <Card className="w-full max-w-sm">
       <CardHeader>
-        <CardTitle>Create an account</CardTitle>
-        <CardDescription>
-          Sign up and start posting today
-        </CardDescription>
+        <CardTitle>Welcome back</CardTitle>
+        <CardDescription>Log in to your account to continue</CardDescription>
       </CardHeader>
 
       <CardContent>
-        <form id="sign-up-form" onSubmit={form.handleSubmit(onSubmit)}>
+        <form id="login-form" onSubmit={form.handleSubmit(onSubmit)}>
           <FieldGroup>
-
-            <Controller
-              name="name"
-              control={form.control}
-              render={({ field, fieldState }) => (
-                <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="sign-up-name">Full name</FieldLabel>
-                  <Input
-                    {...field}
-                    id="sign-up-name"
-                    placeholder="James Smith"
-                    autoComplete="name"
-                    aria-invalid={fieldState.invalid}
-                  />
-                  {fieldState.invalid && (
-                    <FieldError errors={[fieldState.error]} />
-                  )}
-                </Field>
-              )}
-            />
 
             <Controller
               name="email"
               control={form.control}
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="sign-up-email">Email</FieldLabel>
+                  <FieldLabel htmlFor="login-email">Email</FieldLabel>
                   <Input
                     {...field}
-                    id="sign-up-email"
+                    id="login-email"
                     type="email"
                     placeholder="m@example.com"
                     autoComplete="email"
@@ -125,13 +101,13 @@ export default function SignUpPage() {
               control={form.control}
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="sign-up-password">Password</FieldLabel>
+                  <FieldLabel htmlFor="login-password">Password</FieldLabel>
                   <Input
                     {...field}
-                    id="sign-up-password"
+                    id="login-password"
                     type="password"
                     placeholder="••••••••"
-                    autoComplete="new-password"
+                    autoComplete="current-password"
                     aria-invalid={fieldState.invalid}
                   />
                   {fieldState.invalid && (
@@ -141,7 +117,7 @@ export default function SignUpPage() {
               )}
             />
 
-            {/* Server-side error (e.g. email already exists) */}
+            {/* Server-side error (e.g. wrong credentials) */}
             {serverError && (
               <p className="text-sm text-destructive">{serverError}</p>
             )}
@@ -153,17 +129,17 @@ export default function SignUpPage() {
       <CardFooter className="flex-col gap-4">
         <Button
           type="submit"
-          form="sign-up-form"
+          form="login-form"
           className="w-full"
           disabled={isLoading}
         >
-          {isLoading ? "Creating account..." : "Sign Up"}
+          {isLoading ? "Logging in..." : "Login"}
         </Button>
 
         <p className="text-sm text-muted-foreground text-center">
-          Already have an account?{" "}
-          <Link href="/auth/login" className="text-primary underline-offset-4 hover:underline">
-            Login
+          Don&apos;t have an account?{" "}
+          <Link href="/auth/sign-up" className="text-primary underline-offset-4 hover:underline">
+            Create account
           </Link>
         </p>
       </CardFooter>

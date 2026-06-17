@@ -7,12 +7,14 @@ import { ThemeToggle } from './theme-toggle'
 import { Authenticated, Unauthenticated, AuthLoading } from 'convex/react'
 import { authClient } from '@/lib/auth-client'
 import { useRouter } from 'next/navigation'
+import { toast } from "sonner"
 
 export function Navbar() {
   const router = useRouter()
 
   async function handleSignOut() {
     await authClient.signOut()
+    toast.success("Logged out successfully")
     router.push("/")
   }
 

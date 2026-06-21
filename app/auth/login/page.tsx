@@ -26,6 +26,7 @@ import {
   FieldLabel,
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
+import { Loader2 } from "lucide-react"
 
 type LoginFormValues = z.infer<typeof loginSchema>
 
@@ -133,7 +134,15 @@ export default function LoginPage() {
           className="w-full"
           disabled={isLoading}
         >
-          {isLoading ? "Logging in..." : "Login"}
+         {isLoading ? 
+            (
+              <>
+              <Loader2 className="size-5 animate-spin"/>
+              <span>Logging in...</span>
+              </>
+            )
+            : "Login"
+          }
         </Button>
 
         <p className="text-sm text-muted-foreground text-center">

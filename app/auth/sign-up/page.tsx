@@ -26,6 +26,7 @@ import {
   FieldLabel,
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
+import { Loader2 } from "lucide-react"
 
 type SignUpFormValues = z.infer<typeof signUpSchema>
 
@@ -157,7 +158,15 @@ export default function SignUpPage() {
           className="w-full"
           disabled={isLoading}
         >
-          {isLoading ? "Creating account..." : "Sign Up"}
+          {isLoading ? 
+            (
+              <>
+              <Loader2 className="size-5 animate-spin"/>
+              <span>Creating account...</span>
+              </>
+            )
+            : "Sign Up"
+          }
         </Button>
 
         <p className="text-sm text-muted-foreground text-center">

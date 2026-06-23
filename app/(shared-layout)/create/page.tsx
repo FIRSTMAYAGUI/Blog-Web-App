@@ -157,7 +157,7 @@ export default function Create() {
                 {isPending ? (
                   <>
                     <Loader2 className="size-4 animate-spin" />
-                    <span>Loading...</span>
+                    <span>Creating Post...</span>
                   </>
                 ) : (
                   <span>Create Post</span>

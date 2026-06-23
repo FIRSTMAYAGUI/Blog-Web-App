@@ -8,6 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { Controller, useForm } from "react-hook-form"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
+import { useTransition } from "react"
 import * as z from "zod"
 
 import { Button } from "@/components/ui/button"
@@ -32,8 +33,8 @@ type SignUpFormValues = z.infer<typeof signUpSchema>
 
 export default function SignUpPage() {
   const router = useRouter()
+  const [isPending, startTransition] = useTransition()
   const [serverError, setServerError] = React.useState<string | null>(null)
-  const [isLoading, setIsLoading] = React.useState(false)
 
   const form = useForm<SignUpFormValues>({
     resolver: zodResolver(signUpSchema),
@@ -44,27 +45,26 @@ export default function SignUpPage() {
     },
   })
 
-  async function onSubmit(values: SignUpFormValues) {
+  function onSubmit(values: SignUpFormValues) {
     setServerError(null)
-    setIsLoading(true)
 
-    const { error } = await authClient.signUp.email({
-      name: values.name,
-      email: values.email,
-      password: values.password,
+    startTransition(async () => {
+      const { error } = await authClient.signUp.email({
+        name: values.name,
+        email: values.email,
+        password: values.password,
+      })
+
+      if (error) {
+        console.log(error)
+        setServerError(error.message ?? "Something went wrong. Please try again.")
+        toast.error(error.message ?? "Something went wrong. Please try again.")
+        return
+      }
+
+      toast.success("Account created successfully")
+      router.push("/")
     })
-
-    setIsLoading(false)
-
-    if (error) {
-      console.log(error)
-      setServerError(error.message ?? "Something went wrong. Please try again.")
-      toast.error(error.message ?? "Something went wrong. Please try again.")
-      return
-    }
-
-    toast.success("Account created successfully")
-    router.push("/")
   }
 
   return (
@@ -142,7 +142,6 @@ export default function SignUpPage() {
               )}
             />
 
-            {/* Server-side error (e.g. email already exists) */}
             {serverError && (
               <p className="text-sm text-destructive">{serverError}</p>
             )}
@@ -156,17 +155,14 @@ export default function SignUpPage() {
           type="submit"
           form="sign-up-form"
           className="w-full"
-          disabled={isLoading}
+          disabled={isPending}
         >
-          {isLoading ? 
-            (
-              <>
-              <Loader2 className="size-5 animate-spin"/>
+          {isPending ? (
+            <>
+              <Loader2 className="size-5 animate-spin" />
               <span>Creating account...</span>
-              </>
-            )
-            : "Sign Up"
-          }
+            </>
+          ) : "Sign Up"}
         </Button>
 
         <p className="text-sm text-muted-foreground text-center">

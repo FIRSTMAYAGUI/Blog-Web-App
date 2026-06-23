@@ -8,6 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { Controller, useForm } from "react-hook-form"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
+import { useTransition } from "react"
 import * as z from "zod"
 
 import { Button } from "@/components/ui/button"
@@ -32,8 +33,8 @@ type LoginFormValues = z.infer<typeof loginSchema>
 
 export default function LoginPage() {
   const router = useRouter()
+  const [isPending, startTransition] = useTransition()
   const [serverError, setServerError] = React.useState<string | null>(null)
-  const [isLoading, setIsLoading] = React.useState(false)
 
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
@@ -43,26 +44,25 @@ export default function LoginPage() {
     },
   })
 
-  async function onSubmit(values: LoginFormValues) {
+  function onSubmit(values: LoginFormValues) {
     setServerError(null)
-    setIsLoading(true)
 
-    const { error } = await authClient.signIn.email({
-      email: values.email,
-      password: values.password,
+    startTransition(async () => {
+      const { error } = await authClient.signIn.email({
+        email: values.email,
+        password: values.password,
+      })
+
+      if (error) {
+        console.log(error)
+        setServerError(error.message ?? "Invalid email or password.")
+        toast.error(error.message ?? "Invalid email or password.")
+        return
+      }
+
+      toast.success("Logged in successfully")
+      router.push("/")
     })
-
-    setIsLoading(false)
-
-    if (error) {
-      console.log(error)
-      setServerError(error.message ?? "Invalid email or password.")
-      toast.error(error.message ?? "Invalid email or password.")
-      return
-    }
-
-    toast.success("Logged in successfully")
-    router.push("/")
   }
 
   return (
@@ -118,7 +118,6 @@ export default function LoginPage() {
               )}
             />
 
-            {/* Server-side error (e.g. wrong credentials) */}
             {serverError && (
               <p className="text-sm text-destructive">{serverError}</p>
             )}
@@ -132,17 +131,14 @@ export default function LoginPage() {
           type="submit"
           form="login-form"
           className="w-full"
-          disabled={isLoading}
+          disabled={isPending}
         >
-         {isLoading ? 
-            (
-              <>
-              <Loader2 className="size-5 animate-spin"/>
+          {isPending ? (
+            <>
+              <Loader2 className="size-5 animate-spin" />
               <span>Logging in...</span>
-              </>
-            )
-            : "Login"
-          }
+            </>
+          ) : "Login"}
         </Button>
 
         <p className="text-sm text-muted-foreground text-center">

@@ -44,7 +44,12 @@ export default function Create() {
   });
 
   function onSubmit(values: PostFormValues){
-    mutatePost({ title: values.title, content: values.content })
+    startTransition(() => {
+      mutatePost({ title: values.title, content: values.content })
+    })
+
+    toast.success("Post created successfully");
+    router.push("/");
   }
 
   /* function onSubmit(values: PostFormValues) {

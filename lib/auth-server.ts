@@ -12,5 +12,6 @@ export const {
   convexUrl: process.env.NEXT_PUBLIC_CONVEX_URL!,
   convexSiteUrl: process.env.NEXT_PUBLIC_CONVEX_SITE_URL!,
   // Optional, defaults to "/api/auth"
-  basePath: "/custom/auth/path",
+  /*basePath: "/custom/auth/path" */ // Add a basePath here if you have created a custom auth
+  //eles it defaults to /api/auth
 });

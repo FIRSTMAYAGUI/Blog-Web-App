@@ -28,7 +28,7 @@ import { useRouter } from "next/navigation";
 import { postSchema, PostFormValues } from "@/app/schemas/postShema"; 
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
-/* import { createBlogAction} from "@/app/actions/createBlogAction"; */
+import { createBlogAction } from "@/app/actions";
 
 export default function Create() {
   const router = useRouter();
@@ -43,13 +43,14 @@ export default function Create() {
     },
   });
 
-  function onSubmit(values: PostFormValues){
-    startTransition(() => {
-      mutatePost({ title: values.title, content: values.content })
+  async function onSubmit(values: PostFormValues){
+    startTransition(async () => {
+      console.log("client")
+      await createBlogAction(values)
     })
 
-    toast.success("Post created successfully");
-    router.push("/");
+    /* toast.success("Post created successfully");
+    router.push("/"); */
   }
 
   /* function onSubmit(values: PostFormValues) {

@@ -8,13 +8,15 @@ export const createBlog = mutation({
     const user = await authComponent.safeGetAuthUser(ctx)
 
     if (!user){
-        throw new ConvexError('User not authenticated');
+      throw new ConvexError('Unauthenticated');
     }
 
     const blogArticle = await ctx.db.insert("posts", { 
-        title: args.title,
-        content: args.content,
-        authorId: "sdfsfsgsd",
+      title: args.title,
+      content: args.content,
+      authorId: "sdfsfsgsd",
     });
+
+    return blogArticle
   },
 });

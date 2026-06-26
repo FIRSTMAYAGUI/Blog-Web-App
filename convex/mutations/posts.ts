@@ -14,7 +14,7 @@ export const createBlog = mutation({
     const blogArticle = await ctx.db.insert("posts", { 
       title: args.title,
       content: args.content,
-      authorId: "sdfsfsgsd",
+      authorId: user._id,
     });
 
     return blogArticle

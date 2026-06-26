@@ -25,15 +25,12 @@ import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
-import { postSchema, PostFormValues } from "@/app/schemas/postShema"; 
-import { useMutation } from "convex/react";
-import { api } from "@/convex/_generated/api";
+import { postSchema, PostFormValues } from "@/app/schemas/postShema";
 import { createBlogAction } from "@/app/actions";
 
 export default function Create() {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
-   const mutatePost = useMutation(api.mutations.posts.createBlog);
 
   const form = useForm<PostFormValues>({
     resolver: zodResolver(postSchema),
@@ -43,34 +40,19 @@ export default function Create() {
     },
   });
 
-  async function onSubmit(values: PostFormValues){
+  function onSubmit(values: PostFormValues) {
     startTransition(async () => {
-      console.log("client")
-      await createBlogAction(values)
-    })
-
-    /* toast.success("Post created successfully");
-    router.push("/"); */
-  }
-
-  /* function onSubmit(values: PostFormValues) {
-    startTransition(async () => {
-      const formData = new FormData();
-      formData.append("title", values.title);
-      formData.append("content", values.content);
-      formData.append("image", values.image);
-
-      const result = await createBlogAction(formData);
+      const result = await createBlogAction(values)
 
       if (result?.error) {
-        toast.error(result.error);
-        return;
+        toast.error(result.error)
+        return
       }
 
-      toast.success("Post created successfully");
-      router.push("/blog");
-    });
-  } */
+      toast.success("Post created successfully")
+      router.push("/")
+    })
+  }
 
   return (
     <div className="py-8">

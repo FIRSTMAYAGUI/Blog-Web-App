@@ -56,7 +56,7 @@ export default function SignUpPage() {
       })
 
       if (error) {
-        console.log(error)
+        console.log('errror', error)
         setServerError(error.message ?? "Something went wrong. Please try again.")
         toast.error(error.message ?? "Something went wrong. Please try again.")
         return
@@ -174,4 +174,4 @@ export default function SignUpPage() {
       </CardFooter>
     </Card>
   )
-}
+} 

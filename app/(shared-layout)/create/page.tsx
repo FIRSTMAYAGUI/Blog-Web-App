@@ -17,13 +17,14 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
-
 import { Loader2 } from "lucide-react";
-
 import { useTransition } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { useMutation } from "convex/react";
+import { api } from "@/convex/_generated/api";
+import { Id } from "@/convex/_generated/dataModel";
 
 import { postSchema, PostFormValues } from "@/app/schemas/postShema";
 import { createBlogAction } from "@/app/actions";
@@ -31,28 +32,54 @@ import { createBlogAction } from "@/app/actions";
 export default function Create() {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
+  const generateUploadUrl = useMutation(api.mutations.posts.generateUploadUrl);
 
   const form = useForm<PostFormValues>({
     resolver: zodResolver(postSchema),
     defaultValues: {
       title: "",
       content: "",
+      image: undefined,
     },
   });
 
   function onSubmit(values: PostFormValues) {
-    startTransition(async () => {
-      const result = await createBlogAction(values)
+  startTransition(async () => {
+    let storageId: Id<"_storage"> | undefined = undefined;
 
-      if (result?.error) {
-        toast.error(result.error)
-        return
+    if (values.image) {
+      const uploadUrl = await generateUploadUrl();
+
+      const updloadResponse = await fetch(uploadUrl, {
+        method: "POST",
+        headers: { "Content-Type": values.image.type },
+        body: values.image,
+      });
+
+      if (!updloadResponse.ok) {
+        toast.error("Image upload failed. Please try again.");
+        return;
       }
 
-      toast.success("Post created successfully")
-      router.push("/")
-    })
-  }
+      const { storageId: uploadedId } = await updloadResponse.json();
+      storageId = uploadedId as Id<"_storage">;
+    }
+
+    const result = await createBlogAction({
+      title: values.title,
+      content: values.content,
+      storageId,
+    });
+
+    if (result?.error) {
+      toast.error(result.error);
+      return;
+    }
+
+    toast.success("Post created successfully");
+    router.push("/blog");
+  });
+}
 
   return (
     <div className="py-8">
@@ -82,7 +109,7 @@ export default function Create() {
                     <Input
                       id="post-title"
                       aria-invalid={fieldState.invalid}
-                      placeholder="super cool title"
+                      placeholder="Super cool title"
                       {...field}
                     />
                     {fieldState.invalid && (
@@ -112,12 +139,12 @@ export default function Create() {
                 )}
               />
 
-              {/* <Controller
+              <Controller
                 name="image"
                 control={form.control}
                 render={({ field: { value, onChange, ...field }, fieldState }) => (
                   <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel htmlFor="post-image">Image</FieldLabel>
+                    <FieldLabel htmlFor="post-image">Image <span className="text-muted-foreground text-xs">(optional)</span></FieldLabel>
                     <Input
                       id="post-image"
                       aria-invalid={fieldState.invalid}
@@ -134,7 +161,7 @@ export default function Create() {
                     )}
                   </Field>
                 )}
-              /> */}
+              />
 
               <Button type="submit" disabled={isPending}>
                 {isPending ? (

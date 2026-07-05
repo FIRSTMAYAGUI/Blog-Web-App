@@ -9,6 +9,10 @@ import { fetchQuery } from "convex/nextjs";
 export async function PostsList() {
   const posts = await fetchQuery(api.queries.posts.getPosts)
 
+  console.log(
+    posts.map(p => p.imageUrl)
+  )
+
   if (posts.length === 0) {
     return (
       <p className="text-center text-muted-foreground">
@@ -23,9 +27,10 @@ export async function PostsList() {
         <Card key={post._id} className="pt-0">
           <div className="relative h-48 w-full overflow-hidden">
             <Image
-              src={placeholderImage}
+              src={post.imageUrl ?? placeholderImage}
               fill
               alt={post.title}
+              className="object-cover"
             />
           </div>
 

@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'unsplash.com',
+        hostname: 'neighborly-swordfish-847.convex.cloud',
         port: '',
       },
     ],

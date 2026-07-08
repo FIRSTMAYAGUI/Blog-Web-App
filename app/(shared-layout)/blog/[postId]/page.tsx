@@ -3,9 +3,25 @@ import { buttonVariants } from '@/components/ui/button'
 import Link from 'next/link'
 import Image from 'next/image'
 import { ArrowLeft } from 'lucide-react'
-import placeholderImage from '@/images/gallery-2.jpg'
+import placeholderImage from '../../../images/gallery-2.jpg'
+import { fetchQuery } from 'convex/nextjs'
+import { api } from '@/convex/_generated/api'
+import { Id } from '@/convex/_generated/dataModel'
+import { notFound } from 'next/navigation'
 
-export default function SingleBlogPage() {
+export default async function SingleBlogPage({
+  params,
+}: {
+  params: Promise<{ postId: string }>
+}) {
+  const { postId } = await params
+
+  const post = await fetchQuery(api.queries.posts.getPostById, {
+    postId: postId as Id<"posts">,
+  })
+
+  if (!post) notFound()
+
   return (
     <div className="max-w-3xl mx-auto py-8 px-4 animate-in fade-in duration-500 relative">
       <Link
@@ -18,8 +34,8 @@ export default function SingleBlogPage() {
 
       <div className="relative w-full h-[400px] my-8 rounded-xl overflow-hidden shadow-sm">
         <Image
-          src={placeholderImage}
-          alt="Blog post cover"
+          src={post.imageUrl ?? placeholderImage}
+          alt={post.title}
           fill
           className="object-cover hover:scale-105 transition-transform duration-500"
         />
@@ -27,13 +43,13 @@ export default function SingleBlogPage() {
 
       <div className="space-y-4 flex flex-col">
         <h1 className="text-4xl font-bold tracking-tight text-foreground">
-          This is a placeholder blog post title
+          {post.title}
         </h1>
 
         <div className="flex items-center gap-2">
           <p className="text-sm text-muted-foreground">
             Posted on:{" "}
-            {new Date().toLocaleDateString("en-US")}
+            {new Date(post._creationTime).toLocaleDateString("en-US")}
           </p>
         </div>
       </div>
@@ -41,9 +57,7 @@ export default function SingleBlogPage() {
       <Separator className="my-8" />
 
       <p className="text-lg leading-relaxed text-foreground/90 whitespace-pre-wrap">
-        This is placeholder content for the blog post. The actual content will
-        be fetched from the database and displayed here. It will support
-        multiple paragraphs and preserve whitespace formatting.
+        {post.content}
       </p>
 
       <Separator className="my-8" />

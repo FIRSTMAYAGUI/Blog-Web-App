@@ -40,7 +40,7 @@ export async function PostsList() {
                 {post.title}
               </h2>
             </Link>
-            <p className="text-muted-foreground line-clamp-3">{post.content}</p>
+            <p className="text-muted-foreground">{post.content}</p>
           </CardContent>
 
           <CardFooter>

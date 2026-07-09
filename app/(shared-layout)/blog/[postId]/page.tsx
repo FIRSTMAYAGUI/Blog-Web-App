@@ -2,7 +2,7 @@ import { Suspense } from 'react'
 import { PostContent } from './post-content'
 import { SingleBlogSkeleton } from './single-blog-skeleton'
 
-export default async function SingleBlog({
+export default async function SingleBlogPage({
   params,
 }: {
   params: Promise<{ postId: string }>

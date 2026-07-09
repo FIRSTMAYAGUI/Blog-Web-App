@@ -3,11 +3,12 @@ import { buttonVariants } from '@/components/ui/button'
 import Link from 'next/link'
 import Image from 'next/image'
 import { ArrowLeft } from 'lucide-react'
-import placeholderImage from '@/images/gallery-2.jpg'
+import placeholderImage from '../../../images/gallery-2.jpg'
 import { fetchQuery } from 'convex/nextjs'
 import { api } from '@/convex/_generated/api'
 import { Id } from '@/convex/_generated/dataModel'
 import { notFound } from 'next/navigation'
+import { CommentSection } from './comment-section'
 
 export async function PostContent({ postId }: { postId: string }) {
   const post = await fetchQuery(api.queries.posts.getPostById, {
@@ -54,7 +55,7 @@ export async function PostContent({ postId }: { postId: string }) {
         {post.content}
       </p>
 
-      <Separator className="my-8" />
+      <CommentSection />
     </>
   )
 }

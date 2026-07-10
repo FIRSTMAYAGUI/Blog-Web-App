@@ -30,7 +30,7 @@ export function CommentSection() {
 
         <Separator />
 
-        <ScrollArea className="h-[420px] rounded-md border">
+        <ScrollArea className="h-[150px] rounded-md border">
           <section className="space-y-6 p-4">
             <div className="flex gap-4">
               <Avatar className="size-10 shrink-0">
@@ -51,96 +51,6 @@ export function CommentSection() {
               </div>
             </div>
 
-            <div className="flex gap-4">
-              <Avatar className="size-10 shrink-0">
-                <AvatarImage
-                  src="https://avatar.vercel.sh/Marcus Lee"
-                  alt="Marcus Lee"
-                />
-                <AvatarFallback>ML</AvatarFallback>
-              </Avatar>
-              <div className="flex-1 space-y-1">
-                <div className="flex items-center justify-between">
-                  <p className="font-semibold text-sm">Marcus Lee</p>
-                  <p className="text-muted-foreground text-xs">Jan 18, 2026</p>
-                </div>
-                <p className="text-sm text-foreground/90 whitespace-pre-wrap leading-relaxed">
-                  I&apos;ve been struggling with this exact problem all week. Bookmarking this.
-                </p>
-              </div>
-            </div>
-            <div className="flex gap-4">
-              <Avatar className="size-10 shrink-0">
-                <AvatarImage
-                  src="https://avatar.vercel.sh/Marcus Lee"
-                  alt="Marcus Lee"
-                />
-                <AvatarFallback>ML</AvatarFallback>
-              </Avatar>
-              <div className="flex-1 space-y-1">
-                <div className="flex items-center justify-between">
-                  <p className="font-semibold text-sm">Marcus Lee</p>
-                  <p className="text-muted-foreground text-xs">Jan 18, 2026</p>
-                </div>
-                <p className="text-sm text-foreground/90 whitespace-pre-wrap leading-relaxed">
-                  I&apos;ve been struggling with this exact problem all week. Bookmarking this.
-                </p>
-              </div>
-            </div>
-            <div className="flex gap-4">
-              <Avatar className="size-10 shrink-0">
-                <AvatarImage
-                  src="https://avatar.vercel.sh/Marcus Lee"
-                  alt="Marcus Lee"
-                />
-                <AvatarFallback>ML</AvatarFallback>
-              </Avatar>
-              <div className="flex-1 space-y-1">
-                <div className="flex items-center justify-between">
-                  <p className="font-semibold text-sm">Marcus Lee</p>
-                  <p className="text-muted-foreground text-xs">Jan 18, 2026</p>
-                </div>
-                <p className="text-sm text-foreground/90 whitespace-pre-wrap leading-relaxed">
-                  I&apos;ve been struggling with this exact problem all week. Bookmarking this.
-                </p>
-              </div>
-            </div>
-            <div className="flex gap-4">
-              <Avatar className="size-10 shrink-0">
-                <AvatarImage
-                  src="https://avatar.vercel.sh/Marcus Lee"
-                  alt="Marcus Lee"
-                />
-                <AvatarFallback>ML</AvatarFallback>
-              </Avatar>
-              <div className="flex-1 space-y-1">
-                <div className="flex items-center justify-between">
-                  <p className="font-semibold text-sm">Marcus Lee</p>
-                  <p className="text-muted-foreground text-xs">Jan 18, 2026</p>
-                </div>
-                <p className="text-sm text-foreground/90 whitespace-pre-wrap leading-relaxed">
-                  I&apos;ve been struggling with this exact problem all week. Bookmarking this.
-                </p>
-              </div>
-            </div>
-            <div className="flex gap-4">
-              <Avatar className="size-10 shrink-0">
-                <AvatarImage
-                  src="https://avatar.vercel.sh/Marcus Lee"
-                  alt="Marcus Lee"
-                />
-                <AvatarFallback>ML</AvatarFallback>
-              </Avatar>
-              <div className="flex-1 space-y-1">
-                <div className="flex items-center justify-between">
-                  <p className="font-semibold text-sm">Marcus Lee</p>
-                  <p className="text-muted-foreground text-xs">Jan 18, 2026</p>
-                </div>
-                <p className="text-sm text-foreground/90 whitespace-pre-wrap leading-relaxed">
-                  I&apos;ve been struggling with this exact problem all week. Bookmarking this.
-                </p>
-              </div>
-            </div>
             <div className="flex gap-4">
               <Avatar className="size-10 shrink-0">
                 <AvatarImage

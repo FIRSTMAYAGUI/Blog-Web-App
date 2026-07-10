@@ -57,7 +57,7 @@ export async function PostContent({ postId }: { postId: string }) {
 
       <Separator className="my-8" />
 
-      <CommentSection />
+      <CommentSection postId={post._id} />
     </>
   )
 }

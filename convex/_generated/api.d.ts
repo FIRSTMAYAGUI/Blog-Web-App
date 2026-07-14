@@ -12,6 +12,7 @@ import type * as auth from "../auth.js";
 import type * as http from "../http.js";
 import type * as mutations_comments from "../mutations/comments.js";
 import type * as mutations_posts from "../mutations/posts.js";
+import type * as queries_comments from "../queries/comments.js";
 import type * as queries_posts from "../queries/posts.js";
 
 import type {
@@ -25,6 +26,7 @@ declare const fullApi: ApiFromModules<{
   http: typeof http;
   "mutations/comments": typeof mutations_comments;
   "mutations/posts": typeof mutations_posts;
+  "queries/comments": typeof queries_comments;
   "queries/posts": typeof queries_posts;
 }>;
 

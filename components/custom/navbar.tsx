@@ -8,6 +8,7 @@ import { Authenticated, Unauthenticated, AuthLoading } from 'convex/react'
 import { authClient } from '@/lib/auth-client'
 import { useRouter } from 'next/navigation'
 import { toast } from "sonner"
+import { SearchInput } from './SearchInput'
 
 export function Navbar() {
   const router = useRouter()
@@ -19,7 +20,7 @@ export function Navbar() {
   }
 
   return (
-    <nav className='w-full flex py-5 items-center justify-between'>
+    <nav className='w-full flex py-5 items-center justify-between gap-4'>
       <div className='flex items-center gap-8'>
         <Link href="/">
           <h1 className='text-3xl font-bold'>
@@ -33,6 +34,8 @@ export function Navbar() {
           <Link href="/create">Create blog</Link>
         </div>
       </div>
+
+      <SearchInput />
 
       <div className='flex items-center gap-2'>
         <ThemeToggle />

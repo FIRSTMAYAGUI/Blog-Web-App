@@ -23,7 +23,7 @@ export function Navbar() {
       <div className='flex items-center gap-8'>
         <Link href="/">
           <h1 className='text-3xl font-bold'>
-            Blog<span className='text-blue-500'>Pro</span>
+            <span className='text-blue-500'>U</span>Blog
           </h1>
         </Link>
 

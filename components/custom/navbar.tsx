@@ -35,9 +35,8 @@ export function Navbar() {
         </div>
       </div>
 
-      <SearchInput />
-
       <div className='flex items-center gap-2'>
+        <SearchInput />
         <ThemeToggle />
 
         <AuthLoading>

@@ -9,7 +9,6 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 
-// Hardcoded placeholder data — will be replaced with real recent searches later
 const recentSearches = [
   {
     _id: "1",
@@ -43,25 +42,29 @@ function truncate(text: string, maxLength: number) {
 }
 
 export function SearchInput() {
-  const [open, setOpen] = useState(false)
+  const [searchValue, setSearchValue] = useState("")
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
-        <div className="relative w-full max-w-xs">
-          <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
+    <Popover>
+      <div className="relative w-full max-w-xs">
+        <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 size-4 text-muted-foreground pointer-events-none z-10" />
+        
+        {/* Make the Input itself the trigger directly */}
+        <PopoverTrigger asChild>
           <Input
             type="search"
             placeholder="Search posts..."
             className="pl-8"
-            onFocus={() => setOpen(true)}
+            value={searchValue}
+            onChange={(e) => setSearchValue(e.target.value)}
           />
-        </div>
-      </PopoverTrigger>
+        </PopoverTrigger>
+      </div>
 
       <PopoverContent
-        className="w-80 p-2"
+        className="w-72 p-2"
         align="start"
+        sideOffset={6}
         onOpenAutoFocus={(e) => e.preventDefault()}
       >
         <p className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground px-2 py-1.5">
@@ -73,13 +76,15 @@ export function SearchInput() {
           {recentSearches.map((post) => (
             <button
               key={post._id}
-              className="flex flex-col items-start gap-0.5 rounded-md px-2 py-2 text-left hover:bg-muted transition-colors"
+              type="button"
+              onClick={() => setSearchValue(post.title)}
+              className="flex flex-col items-start gap-0.5 rounded-md px-2 py-1.5 text-left hover:bg-muted transition-colors"
             >
               <span className="text-sm font-medium">
-                {truncate(post.title, 15)}
+                {truncate(post.title, 28)}
               </span>
               <span className="text-xs text-muted-foreground">
-                {truncate(post.content, 10)}
+                {truncate(post.content, 35)}
               </span>
             </button>
           ))}

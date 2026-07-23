@@ -11,34 +11,7 @@ import {
 import { useQuery } from "convex/react"
 import { api } from "@/convex/_generated/api"
 import { useRouter } from "next/navigation"
-
-const recentSearches = [
-  {
-    _id: "1",
-    title: "Getting Started with Next.js and Convex",
-    content: "Learn how to build full stack apps with real-time data.",
-  },
-  {
-    _id: "2",
-    title: "Understanding React Server Components",
-    content: "A deep dive into the mental model behind RSCs.",
-  },
-  {
-    _id: "3",
-    title: "Why Zod is the best validation library",
-    content: "Schema validation made simple and type-safe.",
-  },
-  {
-    _id: "4",
-    title: "Building forms with react-hook-form",
-    content: "Performant, flexible, and easy to validate forms.",
-  },
-  {
-    _id: "5",
-    title: "Deploying your app to Vercel",
-    content: "A step by step guide to shipping your project.",
-  },
-]
+import { getRecentSearches, addRecentSearch, type RecentSearchItem } from "@/lib/recent-searches"
 
 function truncate(text: string, maxLength: number) {
   return text.length > maxLength ? text.slice(0, maxLength) + "..." : text
@@ -49,6 +22,8 @@ export function SearchInput() {
   const [open, setOpen] = useState(false)
   const [searchValue, setSearchValue] = useState("")
   const [debouncedValue, setDebouncedValue] = useState("")
+  const [recentSearches, setRecentSearches] = useState
+  <{ _id: string; title: string; content: string }[]>(() => getRecentSearches())
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -69,9 +44,12 @@ export function SearchInput() {
 
   const isSearchMode = searchValue.trim() !== ""
 
-  function handleResultClick(postId: string) {
-    setOpen(false)          // ← explicitly close it, don't rely on Radix's memory
-    router.push(`/blog/${postId}`)
+  function handleResultClick(post: RecentSearchItem) {
+    const updated = addRecentSearch(post)
+    setRecentSearches(updated)
+
+    setOpen(false)
+    router.push(`/blog/${post._id}`)
     setSearchValue("")
     setDebouncedValue("")
   }
@@ -98,26 +76,36 @@ export function SearchInput() {
         sideOffset={6}
         onOpenAutoFocus={(e) => e.preventDefault()}
       >
-        {/* ...unchanged content, just replace onClick handlers below */}
         {!isSearchMode ? (
           <>
             <p className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground px-2 py-1.5">
               <Clock className="size-3.5" />
               Recent searches
             </p>
-            <div className="flex flex-col">
-              {recentSearches.map((post) => (
-                <button
-                  key={post._id}
-                  type="button"
-                  onClick={() => setSearchValue(post.title)}
-                  className="flex flex-col items-start gap-0.5 rounded-md px-2 py-1.5 text-left hover:bg-muted transition-colors"
-                >
-                  <span className="text-sm font-medium">{truncate(post.title, 28)}</span>
-                  <span className="text-xs text-muted-foreground">{truncate(post.content, 35)}</span>
-                </button>
-              ))}
-            </div>
+
+            {recentSearches.length === 0 ? (
+              <p className="text-sm text-muted-foreground text-center py-6">
+                No recent searches yet.
+              </p>
+            ) : (
+              <div className="flex flex-col">
+                {recentSearches.map((post) => (
+                  <button
+                    key={post._id}
+                    type="button"
+                    onClick={() => handleResultClick(post)}
+                    className="flex flex-col items-start gap-0.5 rounded-md px-2 py-1.5 text-left hover:bg-muted transition-colors"
+                  >
+                    <span className="text-sm font-medium">
+                      {truncate(post.title, 28)}
+                    </span>
+                    <span className="text-xs text-muted-foreground">
+                      {truncate(post.content, 35)}
+                    </span>
+                  </button>
+                ))}
+              </div>
+            )}
           </>
         ) : isSearching ? (
           <div className="flex items-center justify-center gap-2 py-6 text-sm text-muted-foreground">
@@ -130,16 +118,22 @@ export function SearchInput() {
               <button
                 key={post._id}
                 type="button"
-                onClick={() => handleResultClick(post._id)}
+                onClick={() => handleResultClick(post)}
                 className="flex flex-col items-start gap-0.5 rounded-md px-2 py-1.5 text-left hover:bg-muted transition-colors"
               >
-                <span className="text-sm font-medium">{truncate(post.title, 25)}</span>
-                <span className="text-xs text-muted-foreground">{truncate(post.content, 30)}</span>
+                <span className="text-sm font-medium">
+                  {truncate(post.title, 25)}
+                </span>
+                <span className="text-xs text-muted-foreground">
+                  {truncate(post.content, 30)}
+                </span>
               </button>
             ))}
           </div>
         ) : (
-          <p className="text-sm text-muted-foreground text-center py-6">No posts found.</p>
+          <p className="text-sm text-muted-foreground text-center py-6">
+            No posts found.
+          </p>
         )}
       </PopoverContent>
     </Popover>

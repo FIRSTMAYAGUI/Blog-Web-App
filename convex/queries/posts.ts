@@ -28,3 +28,26 @@ export const getPostById = query({
     };
   },
 });
+
+export const searchPosts = query({
+  args: { searchTerm: v.string() },
+  handler: async (ctx, args) => {
+    if (args.searchTerm.trim() === "") {
+      return [];
+    }
+
+    const posts = await ctx.db
+      .query("posts")
+      .withSearchIndex("search_title", (q) =>
+        q.search("title", args.searchTerm)
+      )
+      .take(6);
+
+    return Promise.all(
+      posts.map(async (post) => ({
+        ...post,
+        imageUrl: post.imageStorageId ? await ctx.storage.getUrl(post.imageStorageId) : null,
+      }))
+    );
+  },
+});

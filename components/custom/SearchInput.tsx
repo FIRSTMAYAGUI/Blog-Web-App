@@ -46,10 +46,10 @@ function truncate(text: string, maxLength: number) {
 
 export function SearchInput() {
   const router = useRouter()
+  const [open, setOpen] = useState(false)
   const [searchValue, setSearchValue] = useState("")
   const [debouncedValue, setDebouncedValue] = useState("")
 
-  // Debounce: wait 400ms after the user stops typing before updating debouncedValue
   useEffect(() => {
     const timeout = setTimeout(() => {
       setDebouncedValue(searchValue)
@@ -63,7 +63,6 @@ export function SearchInput() {
     debouncedValue.trim() !== "" ? { searchTerm: debouncedValue } : "skip"
   )
 
-  // Typing but debounce hasn't fired yet, or query is in flight
   const isSearching =
     searchValue.trim() !== "" &&
     (searchValue !== debouncedValue || searchResults === undefined)
@@ -71,13 +70,14 @@ export function SearchInput() {
   const isSearchMode = searchValue.trim() !== ""
 
   function handleResultClick(postId: string) {
+    setOpen(false)          // ← explicitly close it, don't rely on Radix's memory
     router.push(`/blog/${postId}`)
     setSearchValue("")
     setDebouncedValue("")
   }
 
   return (
-    <Popover>
+    <Popover open={open} onOpenChange={setOpen}>
       <div className="relative w-full max-w-xs">
         <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 size-4 text-muted-foreground pointer-events-none z-10" />
 
@@ -98,13 +98,13 @@ export function SearchInput() {
         sideOffset={6}
         onOpenAutoFocus={(e) => e.preventDefault()}
       >
+        {/* ...unchanged content, just replace onClick handlers below */}
         {!isSearchMode ? (
           <>
             <p className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground px-2 py-1.5">
               <Clock className="size-3.5" />
               Recent searches
             </p>
-
             <div className="flex flex-col">
               {recentSearches.map((post) => (
                 <button
@@ -113,12 +113,8 @@ export function SearchInput() {
                   onClick={() => setSearchValue(post.title)}
                   className="flex flex-col items-start gap-0.5 rounded-md px-2 py-1.5 text-left hover:bg-muted transition-colors"
                 >
-                  <span className="text-sm font-medium">
-                    {truncate(post.title, 28)}
-                  </span>
-                  <span className="text-xs text-muted-foreground">
-                    {truncate(post.content, 35)}
-                  </span>
+                  <span className="text-sm font-medium">{truncate(post.title, 28)}</span>
+                  <span className="text-xs text-muted-foreground">{truncate(post.content, 35)}</span>
                 </button>
               ))}
             </div>
@@ -137,19 +133,13 @@ export function SearchInput() {
                 onClick={() => handleResultClick(post._id)}
                 className="flex flex-col items-start gap-0.5 rounded-md px-2 py-1.5 text-left hover:bg-muted transition-colors"
               >
-                <span className="text-sm font-medium">
-                  {truncate(post.title, 25)}
-                </span>
-                <span className="text-xs text-muted-foreground">
-                  {truncate(post.content, 30)}
-                </span>
+                <span className="text-sm font-medium">{truncate(post.title, 25)}</span>
+                <span className="text-xs text-muted-foreground">{truncate(post.content, 30)}</span>
               </button>
             ))}
           </div>
         ) : (
-          <p className="text-sm text-muted-foreground text-center py-6">
-            No posts found.
-          </p>
+          <p className="text-sm text-muted-foreground text-center py-6">No posts found.</p>
         )}
       </PopoverContent>
     </Popover>

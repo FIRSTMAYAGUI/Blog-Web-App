@@ -12,11 +12,13 @@ import {
 import {
   Dialog,
   DialogContent,
+  DialogTitle,
 } from "@/components/ui/dialog"
 import { useQuery } from "convex/react"
 import { api } from "@/convex/_generated/api"
 import { useRouter } from "next/navigation"
 import { getRecentSearches, addRecentSearch, type RecentSearchItem } from "@/lib/recent-searches"
+import { VisuallyHidden } from "radix-ui"
 
 function truncate(text: string, maxLength: number) {
   return text.length > maxLength ? text.slice(0, maxLength) + "..." : text
@@ -181,6 +183,10 @@ export function SearchInput() {
             className="max-w-full w-screen h-screen sm:h-screen rounded-none p-0 gap-0 top-0 left-0 translate-x-0 translate-y-0"
             showCloseButton={false}
           >
+            <VisuallyHidden.Root asChild>
+              <DialogTitle>Search Posts</DialogTitle>
+            </VisuallyHidden.Root>
+            
             <div className="flex items-center gap-2 p-3 border-b">
               <Button
                 variant="ghost"

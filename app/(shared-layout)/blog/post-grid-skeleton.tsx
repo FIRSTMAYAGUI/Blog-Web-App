@@ -3,7 +3,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export function PostsGridSkeleton() {
   return (
-    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {[...Array(3)].map((_, i) => (
         <Card key={i} className="pt-0">
           <Skeleton className="h-48 w-full rounded-none" />

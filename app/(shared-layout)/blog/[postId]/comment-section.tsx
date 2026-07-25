@@ -94,7 +94,7 @@ export function CommentSection({ postId }: { postId: string }) {
         ) : comments.length === 0 ? (
           <p className="text-sm text-muted-foreground">No comments yet. Be the first to share your thoughts!</p>
         ) : (
-          <ScrollArea className="h-[150px] rounded-md border">
+          <ScrollArea className="h-37.5 rounded-md border">
             <section className="space-y-6 p-4">
               {comments.map((comment) => (
                 <div key={comment._id} className="flex gap-4">

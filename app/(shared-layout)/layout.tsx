@@ -7,7 +7,9 @@ function SharedLayout({children} : {children: React.ReactNode;}) {
     <>
       <Navbar/>
       <Toaster/>
-      {children}
+      <div className='mt-12'>
+        {children}
+      </div>
     </>
   )
 }

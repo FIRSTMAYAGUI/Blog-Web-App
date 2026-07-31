@@ -35,7 +35,7 @@ export function Navbar() {
   }
 
   return (
-    <nav className='w-full flex py-5 items-center justify-between gap-4'>
+    <nav className='w-full flex px-5 lg:px-10 xl:px-20 py-5 items-center justify-between gap-4 top-0 left-0 right-0 fixed bg-background z-50'>
       <div className='flex items-center gap-4 sm:gap-8'>
         {/* Mobile/tablet menu button — visible lg and below */}
         <Sheet open={menuOpen} onOpenChange={setMenuOpen}>

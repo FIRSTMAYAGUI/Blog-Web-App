@@ -26,6 +26,8 @@ export function CommentSection({ postId }: { postId: string }) {
     postId: postId as Id<"posts">,
   })
 
+  console.log("the comments are", comments)
+
   const form = useForm<CommentFormValues>({
     resolver: zodResolver(commentSchema),
     defaultValues: {

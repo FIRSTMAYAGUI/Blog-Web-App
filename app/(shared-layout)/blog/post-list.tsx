@@ -2,7 +2,7 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { api } from "@/convex/_generated/api";
 import Link from "next/link";
 import Image from "next/image";
-import placeholderImage from '../../images/gallery-2.jpg'
+import placeholderImage from '../../images/default_image.png'
 import { buttonVariants } from "@/components/ui/button";
 import { fetchQuery } from "convex/nextjs";
 

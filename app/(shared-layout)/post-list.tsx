@@ -4,7 +4,7 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { api } from "@/convex/_generated/api";
 import Link from "next/link";
 import Image from "next/image";
-import placeholderImage from '../../images/default_image.png'
+import placeholderImage from '../images/default_image.png'
 import { buttonVariants, Button } from "@/components/ui/button";
 import { usePaginatedQuery } from "convex/react";
 import { Loader2 } from "lucide-react";

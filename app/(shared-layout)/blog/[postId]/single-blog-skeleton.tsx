@@ -8,7 +8,7 @@ export function SingleBlogSkeleton() {
     <div className="max-w-3xl mx-auto py-8 px-4 relative">
       <Link
         className={buttonVariants({ variant: "outline" })}
-        href="/blog"
+        href="/"
       >
         <ArrowLeft className="size-4" />
         Back to blog

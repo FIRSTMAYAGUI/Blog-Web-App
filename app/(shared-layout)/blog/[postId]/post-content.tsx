@@ -21,7 +21,7 @@ export async function PostContent({ postId }: { postId: string }) {
     <>
       <Link
         className={buttonVariants({ variant: "outline" })}
-        href="/blog"
+        href="/"
       >
         <ArrowLeft className="size-4" />
         Back to blog

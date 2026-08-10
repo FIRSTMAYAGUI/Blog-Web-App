@@ -1,8 +1,6 @@
-import { Suspense } from "react";
-import { PostsList } from "./post-list";
-import { PostsGridSkeleton } from "./post-grid-skeleton";
+import { PostsList } from './post-list'
 
-export default function BlogPage() {
+export default function Blog() {
   return (
     <div className="py-12">
       <div className="text-center pb-12">
@@ -10,14 +8,12 @@ export default function BlogPage() {
           Our Blog
         </h1>
         <p className="pt-4 mb-3 max-w-2xl mx-auto text-xl text-muted-foreground">
-          Insights, thoughts, and trends from our team.
+          Browse a wide variety of thoughts.
         </p>
       </div>
 
-      <div className="max-w-5xl mx-auto p-2">
-        <Suspense fallback={<PostsGridSkeleton />}>
-          <PostsList />
-        </Suspense>
+      <div className="max-w-5xl mx-auto">
+        <PostsList />
       </div>
     </div>
   )

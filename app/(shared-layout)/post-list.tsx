@@ -40,6 +40,7 @@ export function PostsList() {
       </p>
     )
   }
+  console.log("these are the results: ", results)
 
   return (
     <div className="space-y-8">

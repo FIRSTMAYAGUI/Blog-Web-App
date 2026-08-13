@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://your-domain.com"), // replace with your actual domain
+  metadataBase: new URL("https://blog-web-app-ecru.vercel.app/"), // replace with your actual domain
   title: {
     default: "UBlog — Share your thoughts with the world",
     template: "%s | UBlog",

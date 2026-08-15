@@ -15,7 +15,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'neighborly-swordfish-847.convex.cloud',
+        hostname: 'laudable-warthog-971.convex.cloud',
         port: '',
       },
     ],
